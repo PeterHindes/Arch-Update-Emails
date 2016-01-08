@@ -1,0 +1,9 @@
+[Unit]
+Description=Run check_updates.py daily
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target

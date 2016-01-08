@@ -1,0 +1,10 @@
+[Unit]
+Description=Run notify_updates.py script
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/bin/notify_updates.py
+
+[Install]
+WantedBy=multi-user.target
