@@ -3,6 +3,7 @@
 import os
 import smtplib
 import sys
+import time
 from email.mime.text import MIMEText
 from socket import gethostname
 from subprocess import run, PIPE
@@ -14,22 +15,33 @@ EMAIL = "INSERT EMAIL HERE"
 PASSWORD = "INSERT PASSWORD HERE"
 SUBJECT_TEMPLATE = "Updates available in {hostname}"
 MSG_TEMPLATE = """
-Updates available in {hostname}.
+At {time}, there are updates available in {hostname}.
 {updates}
+
+Login to {hostname} and run:
+    # pacman -Su
+To update the system.
 """
+
+def add_prefix(prefix, text):
+    result = ""
+    for line in text.splitlines():
+        result += prefix + line + "\n"
+    return result
 
 def check_updates():
     run(["pacman", "--sync", "--downloadonly", "--sysupgrade", "--refresh", "--quiet"], stdout=PIPE)
-    packages = ""
     result = run(["pacman", "--query", "--upgrades"], stdout=PIPE, universal_newlines=True)
+
+    packages = ""
     if result.stdout:
-        packages += "Official repositories:\n"
-        packages += result.stdout
+        packages += "\nOfficial repositories:\n"
+        packages += add_prefix("\t* ", result.stdout)
     # Comment the lines below if you don't want cower/AUR support
     result = run(["cower", "--update", "--color=never"], stdout=PIPE, universal_newlines=True)
     if result.stdout:
-        packages += "AUR:\n"
-        packages += result.stdout
+        packages += "\nAUR:\n"
+        packages += add_prefix("\t* ", result.stdout)
 
     return packages
 
@@ -59,7 +71,10 @@ def main():
         hostname = gethostname()
         send_email(EMAIL, PASSWORD,
                    SUBJECT_TEMPLATE.format(hostname=hostname),
-                   MSG_TEMPLATE.format(hostname=hostname, updates=available_updates))
+                   MSG_TEMPLATE.format(time=time.strftime("%c"),
+                                       hostname=hostname,
+                                       updates=available_updates)
+                   )
     else:
         print("No available updates, not sending e-mail")
 
