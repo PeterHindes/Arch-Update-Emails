@@ -2,7 +2,7 @@ notify_update
 =============
 Get e-mail notifications of updates in Arch Linux
 -------------------------------------------------
-Small Python script to send update notifications via e-mail in Arch Linux distribution (and derivatives).
+Small Python script to send update notifications via e-mail in Arch Linux distribution (and derivatives). Needs Python 3.5 (that you should already have if you use Arch Linux) and [cower](https://aur.archlinux.org/packages/cower/) (and **pacman**, of course).
 
 Installation
 ------------
