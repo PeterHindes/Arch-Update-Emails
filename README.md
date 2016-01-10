@@ -6,10 +6,9 @@ Small Python script to send update notifications via e-mail in Arch Linux distri
 
 Installation
 ------------
-Firstly, install [cower](https://aur.archlinux.org/packages/cower/) if you don't already have it installed.
-It is necessary for AUR updates (of course, you can modify `notify_updates.py` yourself to remove **cower** support).
-Secondly, Open `notify_updates.py` and modify according your necessities (*at least* you need to modify `EMAIL`and `PASSWORD` variables).
-Afterwards, copy `notify_updates.py` to `/usr/local/bin` and `notify_updates.service` and `notify_updates.timer` to `/etc/systemd/system`.
+Firstly, install [cower](https://aur.archlinux.org/packages/cower/) (optional) if you want AUR updates notification.
+Secondly, open `notify_updates.py` and modify according your necessities (*at least* you need to modify `EMAIL`and `PASSWORD` variables).
+Afterwards, copy `notify_updates.py` to `/root` (or any other directory with 700 permission for root, so a normal user can't read your password in plain text!) and `notify_updates.service` and `notify_updates.timer` to `/etc/systemd/system`.
 Finally enable the timer service by running:
   
     # systemctl enable notify_updates.timer
