@@ -4,6 +4,7 @@ import os
 import smtplib
 import sys
 import time
+from distutils.spawn import find_executable
 from email.mime.text import MIMEText
 from socket import gethostname
 from subprocess import run, PIPE
@@ -11,13 +12,14 @@ from subprocess import run, PIPE
 # Needs to be a TLS protected SMTP server
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-EMAIL = "INSERT EMAIL HERE"
-PASSWORD = "INSERT PASSWORD HERE"
+SENDER_EMAIL = "INSERT EMAIL HERE"
+SENDER_PASSWORD = "INSERT PASSWORD HERE"
+RECEIVER_EMAIL = SENDER_EMAIL
+DOWNLOAD_UPDATES = True
 SUBJECT_TEMPLATE = "Updates available in {hostname}"
 MSG_TEMPLATE = """
 At {time}, there are updates available in {hostname}.
 {updates}
-
 Login to {hostname} and run:
     # pacman -Su
 To update the system.
@@ -30,33 +32,33 @@ def add_prefix(prefix, text):
     return result
 
 def check_updates():
-    run(["pacman", "--sync", "--downloadonly", "--sysupgrade", "--refresh", "--quiet"], stdout=PIPE)
+    run(["pacman", "--sync", "--refresh", "--quiet"], stdout=PIPE)
     result = run(["pacman", "--query", "--upgrades"], stdout=PIPE, universal_newlines=True)
 
     packages = ""
     if result.stdout:
         packages += "\nOfficial repositories:\n"
         packages += add_prefix("\t* ", result.stdout)
-    # Comment the lines below if you don't want cower/AUR support
-    result = run(["cower", "--update", "--color=never"], stdout=PIPE, universal_newlines=True)
-    if result.stdout:
-        packages += "\nAUR:\n"
-        packages += add_prefix("\t* ", result.stdout)
+    if find_executable("cower"):
+        result = run(["cower", "--update", "--color=never"], stdout=PIPE, universal_newlines=True)
+        if result.stdout:
+            packages += "\nAUR:\n"
+            packages += add_prefix("\t* ", result.stdout)
 
     return packages
 
-def send_email(email, password, subject, message):
+def send_email(receiver, sender, password, subject, message):
     # Connect to SMTP server
     server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
     server.ehlo()
     server.starttls()
-    server.login(email, password)
+    server.login(sender, password)
 
     # Sender/Receiver should be the same e-mail
     msg = MIMEText(message)
     msg['Subject'] = subject
-    msg['From'] = email
-    msg['To'] = email
+    msg['From'] = sender
+    msg['To'] = receiver
 
     server.send_message(msg)
     server.quit()
@@ -67,9 +69,9 @@ def main():
 
     available_updates = check_updates()
     if available_updates:
-        print("Available updates, sending e-mail to {}".format(EMAIL))
+        print("Available updates, sending e-mail to {}".format(RECEIVER_EMAIL))
         hostname = gethostname()
-        send_email(EMAIL, PASSWORD,
+        send_email(RECEIVER_EMAIL, SENDER_EMAIL, SENDER_PASSWORD,
                    SUBJECT_TEMPLATE.format(hostname=hostname),
                    MSG_TEMPLATE.format(time=time.strftime("%c"),
                                        hostname=hostname,
