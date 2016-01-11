@@ -21,7 +21,7 @@ MSG_TEMPLATE = """
 At {time}, there are updates available in {hostname}.
 {updates}
 Login to {hostname} and run:
-    # pacman -Su
+        # pacman -Syu
 To update the system.
 """
 
