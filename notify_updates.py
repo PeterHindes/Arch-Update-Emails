@@ -38,12 +38,13 @@ def check_updates():
     packages = ""
     if result.stdout:
         packages += "\nOfficial repositories:\n"
-        packages += add_prefix("\t* ", result.stdout)
+        packages += add_prefix("\t:: ", result.stdout)
     if find_executable("cower"):
         result = run(["cower", "--update", "--color=never"], stdout=PIPE, universal_newlines=True)
         if result.stdout:
             packages += "\nAUR:\n"
-            packages += add_prefix("\t* ", result.stdout)
+            # cower already adds "::" as a prefix
+            packages += add_prefix("\t", result.stdout)
 
     return packages
 
