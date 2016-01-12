@@ -55,7 +55,6 @@ def send_email(receiver, sender, password, subject, message):
     server.starttls()
     server.login(sender, password)
 
-    # Sender/Receiver should be the same e-mail
     msg = MIMEText(message)
     msg['Subject'] = subject
     msg['From'] = sender
