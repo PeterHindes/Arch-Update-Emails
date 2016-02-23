@@ -32,10 +32,9 @@ def add_prefix(prefix, text):
     return result
 
 def check_updates():
-    run(["pacman", "--sync", "--refresh", "--quiet"], stdout=PIPE)
-    result = run(["pacman", "--query", "--upgrades"], stdout=PIPE, universal_newlines=True)
-
     packages = ""
+
+    result = run(["checkupdates"], stdout=PIPE, universal_newlines=True)
     if result.stdout:
         packages += "\nOfficial repositories:\n"
         packages += add_prefix("\t:: ", result.stdout)
