@@ -15,7 +15,6 @@ SMTP_PORT = 587
 SENDER_EMAIL = "INSERT EMAIL HERE"
 SENDER_PASSWORD = "INSERT PASSWORD HERE"
 RECEIVER_EMAIL = SENDER_EMAIL
-DOWNLOAD_UPDATES = True
 SUBJECT_TEMPLATE = "Updates available in {hostname}"
 MSG_TEMPLATE = """
 At {time}, there are updates available in {hostname}.
