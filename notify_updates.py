@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-import os
 import smtplib
 import sys
 import time
@@ -62,9 +61,6 @@ def send_email(receiver, sender, password, subject, message):
     server.quit()
 
 def main():
-    if os.geteuid() != 0:
-        sys.exit("You need root privileges to run {}".format(sys.argv[0]))
-
     available_updates = check_updates()
     if available_updates:
         print("Available updates, sending e-mail to {}".format(RECEIVER_EMAIL))
