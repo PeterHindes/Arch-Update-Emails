@@ -1,5 +1,5 @@
 [Unit]
-Description=Run check_updates.py daily
+Description=Run auto_upgrade.py daily
 
 [Timer]
 OnCalendar=daily

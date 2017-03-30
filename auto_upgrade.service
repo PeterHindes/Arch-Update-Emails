@@ -1,0 +1,10 @@
+[Unit]
+Description=Run auto_upgrade.py script
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /root/auto_upgrade.py
+
+[Install]
+WantedBy=multi-user.target
