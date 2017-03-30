@@ -16,7 +16,7 @@ SENDER_PASSWORD = "INSERT PASSWORD HERE"
 RECEIVER_EMAIL = SENDER_EMAIL
 SUBJECT_TEMPLATE = "Updates available in {hostname}"
 MSG_TEMPLATE = """
-At {time}, there are updates available in {hostname} thanks to an impossibility to do an auto-upgrade.
+At {time}, there are updates available in {hostname} due to an impossibility to do an auto-upgrade.
 {updates}
 Login to {hostname} and run:
 \t# pacman -Syu
