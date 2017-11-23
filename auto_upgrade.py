@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+# Import some functions
 import smtplib
 import sys
 import time
@@ -14,10 +15,10 @@ from ./settings.py import *
 # Needs to be a TLS protected SMTP server
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-SENDER_EMAIL = "notificationmanforme@gmail.com"
-SENDER_PASSWORD = "Abc12345"
+SENDER_EMAIL = sender
+SENDER_PASSWORD = senderPassword
 RECEIVER_EMAIL = recipient
-SUBJECT_TEMPLATE = "Updates available in {hostname}"
+SUBJECT_TEMPLATE = "Updates available on {hostname}"
 MSG_TEMPLATE = """
 At {time} on {hostname} there are new updates that should be installed:
 
@@ -93,7 +94,7 @@ def send_email(receiver, sender, password, subject, message):
 def main():
     available_updates = do_update_list()
     if available_updates:
-        print("Available updates, sending e-mail to {}".format(RECEIVER_EMAIL))
+        print("Updates available, sending e-mail to {}".format(RECEIVER_EMAIL))
         hostname = gethostname()
         send_email(RECEIVER_EMAIL, SENDER_EMAIL, SENDER_PASSWORD,
                    SUBJECT_TEMPLATE.format(hostname=hostname),

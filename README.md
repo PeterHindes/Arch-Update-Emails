@@ -1,16 +1,21 @@
-auto_upgrade
+notiman
 =============
-Auto-upgrade Arch Linux or get e-mail in case of failure
+Auto-upgrade notifications for Arch Linux
 --------------------------------------------------------
-Small Python script that tries to update an Arch Linux system (by running `pacman -Syu --noconfirm`) and send update notifications via e-mail in case of failure. Needs Python >3.5, [cower](https://aur.archlinux.org/packages/cower/) and **pacman**.
+Small Python script that sends update notifications via e-mail and also optionally updates Arch Linux (by running `pacman -Syu --noconfirm`).
+
+    Needs Python >3.5, [pacAUR](https://aur.archlinux.org/packages/pacaur/) and **pacman**.
+
 
 Installation
 ------------
-Firstly, install [cower](https://aur.archlinux.org/packages/cower/) (optional) if you want AUR updates notification.
-Secondly, open `auto_upgrade.py` and modify according your necessities (*at least* you need to modify `EMAIL`and `PASSWORD` variables).
-Afterwards, copy `auto_upgrade.py` to `/root` (or any other directory with 700 permission for root, so a normal user can't read your password in plain text!) and `auto_upgrage.service` and `auto_upgrade.timer` to `/etc/systemd/system`.
-Finally enable the timer service by running:
-  
-    # systemctl enable auto_upgrade.timer
+Firstly, open `settings.py` and modify according your necessities (the minimum required is to set your receiver email (a working notification only Gmail account is already attached)).
 
-That's it.
+Secondly, install [pacAUR](https://aur.archlinux.org/packages/pacaur/) if you want AUR update notifications.
+
+Afterwards, copy `auto_upgrade.py` to `/root` and `auto_upgrage.service` and `auto_upgrade.timer` to `/etc/systemd/system/`.
+
+
+Finally enable the timer service by running:
+    # systemctl enable auto_upgrade.timer
+Then it should work ;)
