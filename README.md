@@ -7,7 +7,7 @@ Small Python script that sends update notifications via e-mail and optionally up
 Requires:
   * [Python >3.5](https://www.archlinux.org/packages/extra/x86_64/python/)
   * [pacAUR](https://aur.archlinux.org/packages/pacaur/)
-  * **pacman**.
+  * [**pacman**](https://www.archlinux.org/packages/core/x86_64/pacman/).
 
 
 Installation
