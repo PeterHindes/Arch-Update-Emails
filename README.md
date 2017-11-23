@@ -14,9 +14,9 @@ Installation
 ------------
 
 Install the dependencies:
-`alias pacman='sudo pacman'`
-`pacman -Syu --noconfirm`
-`pacman -S git && git clone https://aur.archlinux.org/pacaur-git.git && cd pacaur-git && makepkg && pacman -U pacaur-git-*.tar.xz`
+* `alias pacman='sudo pacman'`
+* `pacman -Syu --noconfirm`
+* `pacman -S git && git clone https://aur.archlinux.org/pacaur-git.git && cd pacaur-git && makepkg && pacman -U pacaur-git-*.tar.xz`
 
 1. Open `settings.py` and set those things
   * The minimum required is to set your receiver email
