@@ -8,17 +8,22 @@ from email.mime.text import MIMEText
 from socket import gethostname
 from subprocess import run, PIPE
 
+# Import the variables from settings.py
+from ./settings.py import *
+
 # Needs to be a TLS protected SMTP server
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-SENDER_EMAIL = "INSERT EMAIL HERE"
-SENDER_PASSWORD = "INSERT PASSWORD HERE"
-RECEIVER_EMAIL = SENDER_EMAIL
+SENDER_EMAIL = "notificationmanforme@gmail.com"
+SENDER_PASSWORD = "Abc12345"
+RECEIVER_EMAIL = recipient
 SUBJECT_TEMPLATE = "Updates available in {hostname}"
 MSG_TEMPLATE = """
-At {time}, there are updates available in {hostname} due to an impossibility to do an auto-upgrade.
+At {time} on {hostname} there are new updates that should be installed:
+
 {updates}
-Login to {hostname} and run:
+
+Please login to {hostname} and run:
 \t# pacman -Syu
 To upgrade the system.
 """
@@ -29,7 +34,7 @@ def add_prefix(prefix, text):
         result += prefix + line + "\n"
     return result
 
-def do_auto_upgrade(timeout=1800):
+def do_upgrade(timeout=timeout):
     packages = ""
     try:
         run(["pacman", "-Syu", "--noconfirm"], timeout=timeout, universal_newlines=True)
@@ -44,6 +49,28 @@ def do_auto_upgrade(timeout=1800):
             packages += "\nAUR:\n"
             # cower already adds "::" as a prefix
             packages += add_prefix("\t", result.stdout)
+
+    return packages
+
+
+def do_update_list(timeout=timeout):
+    # Clear packages variable
+    packages = ""
+
+    # Refresh pacman database and check for updates
+    run(["pacman", "-Syy", "--noconfirm"], timeout=timeout, universal_newlines=True)
+    result = run(["checkupdates"], stdout=PIPE, universal_newlines=True)
+    packages += "\nOfficial repositories:\n"
+    packages += add_prefix("\t:: ", result.stdout)
+
+    # Check for aur updates
+    if find_executable("pacaur"):
+        result = run(["pacaur", "-k"], stdout=PIPE, universal_newlines=True)
+        if result.stdout:
+            packages += "\npacAUR:\n"
+            packages += add_prefix("\t:: ", result.stdout)
+    else:
+        packages += "\nMissing Package pacAUR\n"
 
     return packages
 
@@ -64,9 +91,9 @@ def send_email(receiver, sender, password, subject, message):
     server.quit()
 
 def main():
-    available_updates = do_auto_upgrade()
+    available_updates = do_update_list()
     if available_updates:
-        print("Available updates thanks to a failure to auto-upgrade, sending e-mail to {}".format(RECEIVER_EMAIL))
+        print("Available updates, sending e-mail to {}".format(RECEIVER_EMAIL))
         hostname = gethostname()
         send_email(RECEIVER_EMAIL, SENDER_EMAIL, SENDER_PASSWORD,
                    SUBJECT_TEMPLATE.format(hostname=hostname),
@@ -75,7 +102,7 @@ def main():
                                        updates=available_updates)
                    )
     else:
-        print("No available package to upgrage or auto-upgrade successful, not sending e-mail")
+        print("No available package to upgrage, not sending e-mail")
 
     sys.exit()
 
