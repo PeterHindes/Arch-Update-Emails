@@ -14,7 +14,7 @@ Installation
 ------------
 
 Install the dependencies:
-'alias pacman='sudo pacman''
+'alias pacman=\'sudo pacman\''
 'pacman -Syu --noconfirm'
 'pacman -S git && git clone https://aur.archlinux.org/pacaur-git.git && cd pacaur-git && makepkg && pacman -U pacaur-git-*.tar.xz'
 
