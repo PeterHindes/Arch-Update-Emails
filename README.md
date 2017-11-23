@@ -5,9 +5,9 @@ Auto-upgrade notifications for Arch Linux
 Small Python script that sends update notifications via e-mail and optionally updates Arch Linux (by running `pacman -Syu --noconfirm`).
 
 Requires:
-  *Python >3.5
-  *[pacAUR](https://aur.archlinux.org/packages/pacaur/)
-  ***pacman**.
+  * Python >3.5
+  * [pacAUR](https://aur.archlinux.org/packages/pacaur/)
+  * **pacman**.
 
 
 Installation
