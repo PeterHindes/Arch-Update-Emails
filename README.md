@@ -21,12 +21,12 @@ Installation
 
 *Configure the program:*
 1. Open `settings.py` and input your preferences
-  1. The minimum required is to set your receiver email
-  2. A working notification only Gmail account is already attached (please don't fu** it up)
+    1. The minimum required is to set your receiver email
+    2. A working notification only Gmail account is already attached (please don't fu** it up)
 2. Install [pacAUR](https://aur.archlinux.org/packages/pacaur/) if you want AUR update notifications.
 3. Place `auto_upgrade.py` in `/root` (if you chose another path adjust auto_upgrade.service)
 4. Place `auto_upgrage.service` and `auto_upgrade.timer` in `/etc/systemd/system/`.
 5. Enable the timer service by running:
-  1. `systemctl enable auto_upgrade.timer`
+    1. `systemctl enable auto_upgrade.timer`
 
 Now it should start working ;)
